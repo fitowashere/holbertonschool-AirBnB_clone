@@ -6,27 +6,25 @@ from os import path
 
 class FileStorage():
     """Class meant to manage JSON file storage"""
-    __file_path = 'HBnB_objects.json'
-    __objects = dict()
-
-    def __init__(self):
-        pass
+    """FileStorage class"""
+    __file_path = "file.json"
+    __objects = {}
 
     def all(self):
         """Returns the dictionary __objects"""
         return self.__objects
 
     def new(self, obj):
-        """Sets a new object as value in __objects with key"""
-        self.__objects[obj.__class__.__name__ + '.' + obj.id] = obj
+        """Sets in __objects the obj"""
+        self.__objects[f"{obj.__class__.__name__}.{obj.id}"] = obj
 
     def save(self):
         """Serializes __objects to the JSON file"""
-        json_dict = dict()
+        objects_dict = {}
         for key, value in self.__objects.items():
-            json_dict[key] = value.to_dict()
-        with open(self.__file_path, 'w', encoding='utf-8') as file:
-            file.write(json.dumps(json_dict))
+            objects_dict[key] = value.to_dict()
+        with open(self.__file_path, "w", encoding='utf-8') as f:
+            json.dump(objects_dict, f)
 
     def reload(self):
         """Deserializes the JSON file"""
