@@ -3,7 +3,6 @@
 import cmd
 import json
 from models import storage
-from models.base_model import BaseModel
 from models.user import User
 
 class HBNBCommand(cmd.Cmd):
@@ -18,6 +17,21 @@ class HBNBCommand(cmd.Cmd):
         """EOF command to exit the program"""
         print()
         return True
+    
+    def do_create(self, line):
+        """Creates a new instance of BaseModel, saves it and prints the id"""
+        args = line.split()
+
+        if len(args) == 0:
+            print("** class name missing **")
+
+        elif args[0] not in HBNBCommand().class_dict.keys():
+            print("** class doesn't exist **")
+
+        else:
+            new = self.class_dict[args[0]]()
+            storage.save()
+            print(new.id)
 
     def do_show(self, line):
         """Prints the string representation of an instance"""
@@ -80,6 +94,35 @@ class HBNBCommand(cmd.Cmd):
             print([str(v) for v in storage.all().values()
                   if v.__class__.__name__ == args[0]])
 
+    def do_update(self, line):
+        """Updates an instance based on the class name and id"""
+        args = line.split()
+
+        if len(args) == 0:
+            print("** class name missing **")
+
+        elif args[0] not in HBNBCommand().class_dict.keys():
+            print("** class doesn't exist **")
+
+        elif len(args) == 1:
+            print("** instance id missing **")
+
+        else:
+            all_keys = storage.all()
+            key = args[0] + "." + args[1]
+
+            if key not in all_keys.keys():
+                print("** no instance found **")
+
+            elif len(args) == 2:
+                print("** attribute name missing **")
+
+            elif len(args) == 3:
+                print("** value missing **")
+
+            else:
+                setattr(all_keys[key], args[2], args[3])
+                storage.save()
 
     def emptyline(self):
         """Do nothing on empty line"""
