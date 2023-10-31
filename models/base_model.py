@@ -1,5 +1,9 @@
-import uuid
+#!/usr/bin/python3
+"""Base Model"""
+from . import storage
 from datetime import datetime
+import uuid
+
 
 class BaseModel:
     """
