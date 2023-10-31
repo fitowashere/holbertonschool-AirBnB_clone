@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Base Model"""
-from . import storage
 from datetime import datetime
 import uuid
 
@@ -9,13 +8,20 @@ class BaseModel:
     """
     BaseModel class that defines all common attributes/methods for other classes
     """
-    def __init__(self):
-        """
-        Constructor method that initializes the BaseModel instance
-        """
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+    def __init__(self, *args, **kwargs):
+        """BaseModel class constructor"""
+        if kwargs is None or len(kwargs) == 0:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+            storage.new(self)
+        else:
+            ISO_fmt = '%Y-%m-%dT%H:%M:%S.%f'
+            self.created_at = datetime.strptime(kwargs['created_at'], ISO_fmt)
+            self.updated_at = datetime.strptime(kwargs['updated_at'], ISO_fmt)
+            for key, value in kwargs.items():
+                if key not in ('created_at', 'updated_at', '__class__'):
+                    self.__dict__[key] = value
 
     def __str__(self):
         """
