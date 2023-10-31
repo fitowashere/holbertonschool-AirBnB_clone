@@ -2,7 +2,7 @@
 """ Storage engine for AirBnB clone """
 import json
 from os import path
-
+from models.user import User
 
 class FileStorage():
     """Class meant to manage JSON file storage"""
@@ -31,7 +31,7 @@ class FileStorage():
         from ..base_model import BaseModel
 
 
-        classes = [BaseModel]
+        classes = [BaseModel, User]
         class_dict = dict()
         for c in classes:
             class_dict[c.__name__] = c
