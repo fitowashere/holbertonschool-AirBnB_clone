@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""AirBnB clone"""
+"""Base Model"""
 from . import storage
 from datetime import datetime
 import uuid
