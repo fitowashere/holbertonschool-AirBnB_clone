@@ -7,34 +7,45 @@ import uuid
 
 class BaseModel:
     """
-    BaseModel class that defines all common attributes/methods for other classes
+    BaseModel class that defines all common attributes/methods for other classes.
     """
     def __init__(self, *args, **kwargs):
         """BaseModel class constructor"""
-        if kwargs is None or len(kwargs) == 0:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-            storage.new(self)
-        else:
-            ISO_fmt = '%Y-%m-%dT%H:%M:%S.%f'
-            self.created_at = datetime.strptime(kwargs['created_at'], ISO_fmt)
-            self.updated_at = datetime.strptime(kwargs['updated_at'], ISO_fmt)
+        if kwargs:
+            # Set each key in kwargs, with special handling for dates.
+            self.id = kwargs.get('id', str(uuid.uuid4()))
+            date_format = '%Y-%m-%dT%H:%M:%S.%f'
+            if 'created_at' in kwargs:
+                self.created_at = datetime.strptime(kwargs['created_at'], date_format)
+            else:
+                self.created_at = datetime.now()
+
+            if 'updated_at' in kwargs:
+                self.updated_at = datetime.strptime(kwargs['updated_at'], date_format)
+            else:
+                self.updated_at = datetime.now()
+
             for key, value in kwargs.items():
-                if key not in ('created_at', 'updated_at', '__class__'):
-                    self.__dict__[key] = value
+                if key not in ('id', 'created_at', 'updated_at', '__class__'):
+                    setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.now()
+
+        storage.new(self)
 
     def __str__(self):
         """
         Method that returns a string representation of the BaseModel instance
         """
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
         """
         Method that updates the public instance attribute updated_at with the current datetime
         """
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """
