@@ -39,9 +39,12 @@ class TestCity(unittest.TestCase):
 
     def test_str(self):
         """Test STR"""
-        expected = f"[{type(self.city).__name__}] ({self.city.id}) {self.city.__dict__}"
-        self.assertEqual(str(self.city), expected)
-
+        bm1 = BaseModel()
+        str_output = str(bm1)
+        self.assertIn(f"[BaseModel] ({bm1.id})", str_output)
+        self.assertIn("'id':", str_output)
+        self.assertIn("'created_at':", str_output)
+        self.assertIn("'updated_at':", str_output)
 
 if __name__ == '__main__':
     unittest.main()

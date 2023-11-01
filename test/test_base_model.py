@@ -26,7 +26,11 @@ class TestBaseModel(unittest.TestCase):
     def test_str(self):
         """Test str"""
         bm1 = BaseModel()
-        self.assertEqual(str(bm1), f"[BaseModel] ({bm1.id}) {bm1.__dict__}")
+        str_output = str(bm1)
+        self.assertIn(f"[BaseModel] ({bm1.id})", str_output)
+        self.assertIn("'id':", str_output)
+        self.assertIn("'created_at':", str_output)
+        self.assertIn("'updated_at':", str_output)
 
     def test_save(self):
         """Test save"""

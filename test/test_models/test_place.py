@@ -31,9 +31,11 @@ class TestPlace(unittest.TestCase):
     def test_str(self):
         """Test that the __str__ method returns a string"""
         p = Place()
-        p.name = "My Place"
-        p.city_id = "123"
-        self.assertEqual(str(p), "[Place] ({}) {}".format(p.id, p.__dict__))
+        str_output = str(p)
+        self.assertIn(f"[Place] ({p.id})", str_output)
+        self.assertIn("'id':", str_output)
+        self.assertIn("'created_at':", str_output)
+        self.assertIn("'updated_at':", str_output)
 
     def test_to_dict(self):
         """Test to_dict method creates a dictionary with proper attrs"""

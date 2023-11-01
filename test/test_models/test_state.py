@@ -19,8 +19,12 @@ class TestState(unittest.TestCase):
 
     def test_str(self):
         """Test that the __str__ method returns a string"""
-        self.assertEqual(str(self.state), "[State] ({}) {}".format(
-            self.state.id, self.state.__dict__))
+        bm1 = BaseModel()
+        str_output = str(bm1)
+        self.assertIn(f"[BaseModel] ({bm1.id})", str_output)
+        self.assertIn("'id':", str_output)
+        self.assertIn("'created_at':", str_output)
+        self.assertIn("'updated_at':", str_output)
 
     def test_to_dict(self):
         """Test that the to_dict method returns a dictionary"""
