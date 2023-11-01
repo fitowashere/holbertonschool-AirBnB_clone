@@ -34,10 +34,8 @@ class FileStorage():
 
     def reload(self):
         """Deserializes the JSON file"""
-        from ..base_model import BaseModel
 
-
-        classes = [BaseModel, User]
+        classes = [BaseModel, User, State, City, Amenity, Place, Review]
         class_dict = dict()
         for c in classes:
             class_dict[c.__name__] = c
