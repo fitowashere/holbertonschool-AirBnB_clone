@@ -39,10 +39,7 @@ class BaseModel:
         """
         Method that returns a string representation of the BaseModel instance
         """
-         # Custom ordering and formatting
-        ordered_keys = ['name', 'my_number', 'updated_at', 'id', 'created_at']
-        ordered_dict = {k: self.__dict__[k] for k in ordered_keys if k in self.__dict__}
-        return f"[{self.__class__.__name__}] ({self.id}) {ordered_dict}"
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
  
     def save(self):
         """
