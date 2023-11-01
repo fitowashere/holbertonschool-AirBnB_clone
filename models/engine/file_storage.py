@@ -4,11 +4,13 @@ import json
 from os import path
 from models.user import User
 
+
 class FileStorage():
     """Class meant to manage JSON file storage"""
     """FileStorage class"""
     __file_path = "file.json"
     __objects = {}
+
 
     def all(self):
         """Returns the dictionary __objects"""
@@ -28,21 +30,29 @@ class FileStorage():
 
     def reload(self):
         """Deserializes the JSON file"""
-        from ..base_model import BaseModel
-
+        from models.base_model import BaseModel
 
         classes = [BaseModel, User]
-        class_dict = dict()
-        for c in classes:
-            class_dict[c.__name__] = c
+        class_dict = {c.__name__: c for c in classes}
 
-        if path.exists(self.__file_path) is True:
-            with open(self.__file_path, 'r', encoding='utf-8') as file:
-                content = file.read()
-                if content is not None and content != '':
-                    json_dict = json.loads(content)
-                    for key, value in json_dict.items():
-                        obj_class = class_dict[value['__class__']]
-                        self.__objects[key] = obj_class(**value)
-        else:
-            pass
+        try:
+            if path.exists(self.__file_path):
+                with open(self.__file_path, 'r', encoding='utf-8') as file:
+                    content = file.read()
+                    if content:
+                        json_dict = json.loads(content)
+                        for key, value in json_dict.items():
+                            obj_class = class_dict.get(value['__class__'])
+                            if obj_class:
+                                self.__objects[key] = obj_class(**value)
+        except Exception as e:
+            # Handle exceptions
+            print(f"Error while reloading JSON file: {e}")
+
+    def delete(self, obj=None):
+        """Delete obj from __objects if it’s inside"""
+        if obj:
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            if key in self.__objects:
+                del self.__objects[key]
+                self.save()

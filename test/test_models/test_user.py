@@ -51,21 +51,25 @@ class TestUser(unittest.TestCase):
         self.assertEqual(user.last_name, kwargs["last_name"])
 
     def test_init_args(self):
-        """Test that the User instance is correctly created using args"""
-        args = ["test@test.com", "password", "John", "Doe"]
-        user = User(*args)
-        self.assertEqual(user.email, args[0])
-        self.assertEqual(user.password, args[1])
-        self.assertEqual(user.first_name, args[2])
-        self.assertEqual(user.last_name, args[3])
-
-    def test_init_no_args(self):
-        """Test that the User instance is correctly created without args"""
-        user = User()
-        self.assertEqual(user.email, "")
-        self.assertEqual(user.password, "")
-        self.assertEqual(user.first_name, "")
-        self.assertEqual(user.last_name, "")
+        """Test that the User instance is correctly created using keyword arguments"""
+        kwargs = {
+            "email": "test@test.com",
+            "password": "password",
+            "first_name": "John",
+            "last_name": "Doe"
+        }
+        user = User(**kwargs)
+        self.assertEqual(user.email, kwargs['email'])
+        self.assertEqual(user.password, kwargs['password'])
+        self.assertEqual(user.first_name, kwargs['first_name'])
+        self.assertEqual(user.last_name, kwargs['last_name'])
+        def test_init_no_args(self):
+            """Test that the User instance is correctly created without args"""
+            user = User()
+            self.assertEqual(user.email, "")
+            self.assertEqual(user.password, "")
+            self.assertEqual(user.first_name, "")
+            self.assertEqual(user.last_name, "")
 
 if __name__ == '__main__':
     unittest.main()

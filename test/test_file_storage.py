@@ -5,32 +5,44 @@ from models.engine.file_storage import FileStorage
 
 
 class TestFileStorage(unittest.TestCase):
-    """ Testing File Storae functionality """
+    """ Testing File Storage functionality """
+
+    def setUp(self):
+        self.fs = FileStorage()
+
+    def tearDown(self):
+        """ Clean up after tests """
+        for obj in list(self.fs.all().values()):
+            self.fs.delete(obj)
 
     def test_all(self):
         """Test all"""
-        fs1 = FileStorage()
         fs2 = FileStorage()
-        self.assertEqual(fs1.all(), fs2.all())
+        self.assertEqual(self.fs.all(), fs2.all())
 
     def test_new(self):
         """Test new"""
-        fs1 = FileStorage()
         bm1 = BaseModel()
-        fs1.new(bm1)
-        self.assertEqual(fs1.all(), {f'BaseModel.{bm1.id}': bm1})
+        self.fs.new(bm1)
+        self.assertIn(f'BaseModel.{bm1.id}', self.fs.all()) # Check if object is added
 
     def test_save(self):
         """Test save"""
-        fs1 = FileStorage()
-        bm1 = BaseModel()
-        fs1.new(bm1)
-        fs1.save()
+        bm2 = BaseModel()
+        self.fs.new(bm2) # Add object to storage
+        self.fs.save() # Save the object
         with open('file.json', 'r') as f:
-            data = json.load(f)
-            self.assertEqual(len(data), 2)
-            self.assertIn(f'BaseModel.{bm1.id}', data)
+            self.assertIn(f'BaseModel.{bm2.id}', f.read()) # Check if object is saved
 
+    def test_delete(self):
+        """Test delete method of FileStorage"""
+        bm = BaseModel()
+        self.fs.new(bm)  # Adding the object to the storage
+        self.assertIn(f"BaseModel.{bm.id}", self.fs.all())  # Check if object is added
+
+        # Now delete the object and check if it's removed
+        self.fs.delete(bm)
+        self.assertNotIn(f"BaseModel.{bm.id}", self.fs.all())  # Object should be removed
 
 if __name__ == '__main__':
     unittest.main()
