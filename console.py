@@ -6,11 +6,12 @@ from models import storage
 from models.user import User
 from models.base_model import BaseModel
 
+
 class HBNBCommand(cmd.Cmd):
     """Class for the console"""
     prompt = '(hbnb) '
     valid_class = ["BaseModel", "User", "Place", "State",
-                 "City", "Amenity", "Review"]
+                   "City", "Amenity", "Review"]
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
@@ -20,7 +21,7 @@ class HBNBCommand(cmd.Cmd):
         """EOF command to exit the program"""
         print()
         return True
-    
+
     def do_create(self, arg):
         """Creates a new instance of BaseModel, saves it and prints the id"""
         if not arg:
@@ -90,7 +91,6 @@ class HBNBCommand(cmd.Cmd):
             if obj.startswith(f"{cls_name}."):
                 print(storage.all()[obj].__str__())
 
-
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
         if not arg:
@@ -118,7 +118,7 @@ class HBNBCommand(cmd.Cmd):
         if len(li_arg) == 3:
             print("** value missing **")
             return
-        
+
         # Prevent update of id, created_at, and updated_at
         if li_arg[2] in ['id', 'created_at', 'updated_at']:
             print("** attribute can't be updated **")
@@ -135,6 +135,7 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Do nothing when hit enters\n"""
         pass
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
