@@ -99,7 +99,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
         read_only_attrs = ['id', 'created_at', 'updated_at']
-        
+
         if not arg:
             print("** class name missing **")
             return
