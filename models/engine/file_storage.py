@@ -10,11 +10,13 @@ from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
 
+
 class FileStorage():
     """Class meant to manage JSON file storage"""
     """FileStorage class"""
     __file_path = "file.json"
     __objects = {}
+
 
     def all(self):
         """Returns the dictionary __objects"""
