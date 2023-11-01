@@ -55,12 +55,12 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
-    def do_destroy(self, line):
+    def do_destroy(self, arg):
         """Deletes an instance"""
         li_arg = arg.split()
         if not li_arg:
             print("** class name missing **")
-        elif li_arg[0] not in self.valid_cls:
+        elif li_arg[0] not in self.valid_class:
             print("** class doesn't exist **")
         elif len(li_arg) < 2:
             print("** instance id missing **")
@@ -117,6 +117,11 @@ class HBNBCommand(cmd.Cmd):
 
         if len(li_arg) == 3:
             print("** value missing **")
+            return
+        
+        # Prevent update of id, created_at, and updated_at
+        if li_arg[2] in ['id', 'created_at', 'updated_at']:
+            print("** attribute can't be updated **")
             return
 
         try:
