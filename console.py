@@ -4,6 +4,7 @@ import cmd
 import json
 from models import storage
 from models.user import User
+from models.base_model import BaseModel
 
 class HBNBCommand(cmd.Cmd):
     """Class for the console"""
