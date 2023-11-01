@@ -5,6 +5,11 @@ import json
 from models import storage
 from models.user import User
 from models.base_model import BaseModel
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
@@ -93,6 +98,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
+        read_only_attrs = ['id', 'created_at', 'updated_at']
+        
         if not arg:
             print("** class name missing **")
             return
@@ -120,8 +127,8 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # Prevent update of id, created_at, and updated_at
-        if li_arg[2] in ['id', 'created_at', 'updated_at']:
-            print("** attribute can't be updated **")
+        if li_arg[2] in read_only_attrs:
+            print(f"** {li_arg[2]} attribute can't be updated **")
             return
 
         try:
@@ -130,6 +137,7 @@ class HBNBCommand(cmd.Cmd):
             value = li_arg[3]
 
         setattr(storage.all()[key], li_arg[2], value)
+        print(f"Updated {li_arg[2]} to {value} in instance {key}")
         storage.all()[key].save()
 
     def emptyline(self):
