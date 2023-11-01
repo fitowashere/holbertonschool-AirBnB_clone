@@ -2,7 +2,13 @@
 """ Storage engine for AirBnB clone """
 import json
 from os import path
+from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.amenity import Amenity
 
 class FileStorage():
     """Class meant to manage JSON file storage"""
