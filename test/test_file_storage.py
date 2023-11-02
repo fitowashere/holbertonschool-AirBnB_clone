@@ -1,4 +1,5 @@
 import unittest
+import os
 import json
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
@@ -11,12 +12,13 @@ class TestFileStorage(unittest.TestCase):
         self.fs = FileStorage()
         self.fs1 = FileStorage()
         self.obj = BaseModel()
-        self.obj.id ="123"
 
     def tearDown(self):
-        self.fs = None
-        self.fs1 = None
-        self.obj = None
+        """Reset FileStorage and delete the file.json after each test"""
+        FileStorage._FileStorage__objects = {}  # Reset internal objects dictionary
+        if os.path.exists("file.json"):
+            os.remove("file.json")  # Delete the file.json if it exists
+
 
     def test_all(self):
         """Test all"""

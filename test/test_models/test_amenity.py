@@ -12,6 +12,10 @@ class TestAmenity(unittest.TestCase):
         """Set up"""
         self.amenity = Amenity()
 
+    def tearDown(self):
+        """Clean up after testing."""
+        del self.amenity
+
     def test_name(self):
         """Test name"""
         self.assertEqual(self.amenity.name, '')

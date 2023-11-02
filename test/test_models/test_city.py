@@ -12,6 +12,10 @@ class TestCity(unittest.TestCase):
         """Set up"""
         self.city = City()
 
+    def tearDown(self):
+        """Clean up after testing."""
+        del self.city
+        
     def test_name(self):
         """Test name"""
         self.assertEqual(self.city.name, '')

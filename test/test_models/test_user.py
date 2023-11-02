@@ -19,6 +19,7 @@ class TestUser(unittest.TestCase):
         self.user2.last_name = "Kernel"
         self.user2.save()
 
+
     def test_attributes(self):
         """Test that the User instance has the required attributes"""
         self.assertTrue(hasattr(self.user, "email"))
@@ -76,6 +77,13 @@ class TestUser(unittest.TestCase):
             self.assertEqual(user.password, "")
             self.assertEqual(user.first_name, "")
             self.assertEqual(user.last_name, "")
+
+    def tearDown(self):
+        """Tear down test fixtures"""
+        del self.user
+        del self.user2
+        storage.delete()
+        storage.save()
 
 if __name__ == '__main__':
     unittest.main()

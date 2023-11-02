@@ -41,5 +41,10 @@ class TestState(unittest.TestCase):
         state = State(**kwargs)
         self.assertEqual(state.name, kwargs["name"])
 
+    def tearDown(self):
+        """Tear down test fixtures"""
+        from models import storage
+        storage.delete(self.state)
+        
 if __name__ == '__main__':
     unittest.main()
