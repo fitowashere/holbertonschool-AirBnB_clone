@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-# models/amenity.py
 """Amenity Module"""
+
 from models.base_model import BaseModel
 
 

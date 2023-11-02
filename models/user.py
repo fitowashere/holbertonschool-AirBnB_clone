@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """User class that inherits from BaseModel"""
+
 from datetime import datetime
 from models import base_model
 import models
