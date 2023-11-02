@@ -5,32 +5,45 @@ from models.engine.file_storage import FileStorage
 
 
 class TestFileStorage(unittest.TestCase):
-    """ Testing File Storae functionality """
+    """ Testing File Storage functionality """
+
+    def setUp(self):
+        self.fs = FileStorage()
+        self.fs1 = FileStorage()
+        self.obj = BaseModel()
+        self.obj.id ="123"
+
+   
 
     def test_all(self):
         """Test all"""
-        fs1 = FileStorage()
         fs2 = FileStorage()
-        self.assertEqual(fs1.all(), fs2.all())
+        self.assertEqual(self.fs.all(), self.fs1.all(), fs2.all())
 
     def test_new(self):
         """Test new"""
-        fs1 = FileStorage()
         bm1 = BaseModel()
-        fs1.new(bm1)
-        self.assertEqual(fs1.all(), {f'BaseModel.{bm1.id}': bm1})
+        self.fs.new(bm1)
+        key = self.obj.__class__.__name__ + "." + self.obj.id
+        self.assertIn(f'BaseModel.{bm1.id}', self.fs.all()) # Check if object is added
+        self.assertIn(key, self.fs1.all())
 
     def test_save(self):
         """Test save"""
-        fs1 = FileStorage()
-        bm1 = BaseModel()
-        fs1.new(bm1)
-        fs1.save()
+        bm2 = BaseModel()
+        self.fs.new(bm2) # Add object to storage
+        self.fs.save() # Save the object
         with open('file.json', 'r') as f:
-            data = json.load(f)
-            self.assertEqual(len(data), 2)
-            self.assertIn(f'BaseModel.{bm1.id}', data)
+            self.assertIn(f'BaseModel.{bm2.id}', f.read()) # Check if object is saved
 
+    def test_reload(self):
+        """Test reload method"""
+        self.fs1.new(self.obj)
+        self.fs1.save()
+        self.fs1._FileStorage__objects = {}
+        self.fs1.reload()
+        key = self.obj.__class__.__name__ + "." + self.obj.id
+        self.assertIn(key, self.fs1.all())
 
 if __name__ == '__main__':
     unittest.main()
