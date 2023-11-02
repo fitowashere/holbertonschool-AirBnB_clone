@@ -13,7 +13,10 @@ class TestFileStorage(unittest.TestCase):
         self.obj = BaseModel()
         self.obj.id ="123"
 
-   
+    def tearDown(self):
+        self.fs = None
+        self.fs1 = None
+        self.obj = None
 
     def test_all(self):
         """Test all"""
