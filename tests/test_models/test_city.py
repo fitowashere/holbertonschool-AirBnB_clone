@@ -15,7 +15,7 @@ class TestCity(unittest.TestCase):
     def tearDown(self):
         """Clean up after testing."""
         del self.city
-        
+
     def test_name(self):
         """Test name"""
         self.assertEqual(self.city.name, '')
@@ -49,6 +49,7 @@ class TestCity(unittest.TestCase):
         self.assertIn("'id':", str_output)
         self.assertIn("'created_at':", str_output)
         self.assertIn("'updated_at':", str_output)
+
 
 if __name__ == '__main__':
     unittest.main()

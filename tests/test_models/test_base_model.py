@@ -1,6 +1,7 @@
+#!/usr/bin/python3
+""" Module for testing base model"""
 import unittest
 from models.base_model import BaseModel
-
 
 
 class TestBaseModel(unittest.TestCase):

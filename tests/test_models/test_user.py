@@ -19,7 +19,6 @@ class TestUser(unittest.TestCase):
         self.user2.last_name = "Kernel"
         self.user2.save()
 
-
     def test_attributes(self):
         """Test that the User instance has the required attributes"""
         self.assertTrue(hasattr(self.user, "email"))
@@ -58,7 +57,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(user.last_name, kwargs["last_name"])
 
     def test_init_args(self):
-        """Test that the User instance is correctly created using keyword arguments"""
+        """Test keyword arguments"""
         kwargs = {
             "email": "test@test.com",
             "password": "password",
@@ -70,6 +69,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(user.password, kwargs['password'])
         self.assertEqual(user.first_name, kwargs['first_name'])
         self.assertEqual(user.last_name, kwargs['last_name'])
+
         def test_init_no_args(self):
             """Test that the User instance is correctly created without args"""
             user = User()
@@ -84,6 +84,7 @@ class TestUser(unittest.TestCase):
         del self.user2
         storage.delete()
         storage.save()
+
 
 if __name__ == '__main__':
     unittest.main()

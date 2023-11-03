@@ -16,7 +16,7 @@ class TestPlace(unittest.TestCase):
     def tearDown(self):
         """Tear down test fixtures"""
         storage.delete(self.place)
-        
+
     def test_instantiation(self):
         p = Place()
         self.assertIsInstance(p, Place)
@@ -56,6 +56,7 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(d["name"], "My Place")
         self.assertEqual(d["city_id"], "123")
         self.assertEqual(d["__class__"], "Place")
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -15,10 +15,9 @@ class TestFileStorage(unittest.TestCase):
 
     def tearDown(self):
         """Reset FileStorage and delete the file.json after each test"""
-        FileStorage._FileStorage__objects = {}  # Reset internal objects dictionary
+        FileStorage._FileStorage__objects = {}  # Reset objects
         if os.path.exists("file.json"):
-            os.remove("file.json")  # Delete the file.json if it exists
-
+            os.remove("file.json")  # Delete the file.json
 
     def test_all(self):
         """Test all"""
@@ -30,16 +29,16 @@ class TestFileStorage(unittest.TestCase):
         bm1 = BaseModel()
         self.fs.new(bm1)
         key = self.obj.__class__.__name__ + "." + self.obj.id
-        self.assertIn(f'BaseModel.{bm1.id}', self.fs.all()) # Check if object is added
+        self.assertIn(f'BaseModel.{bm1.id}', self.fs.all())
         self.assertIn(key, self.fs1.all())
 
     def test_save(self):
         """Test save"""
         bm2 = BaseModel()
-        self.fs.new(bm2) # Add object to storage
-        self.fs.save() # Save the object
+        self.fs.new(bm2)  # Add object to storage
+        self.fs.save()  # Save the object
         with open('file.json', 'r') as f:
-            self.assertIn(f'BaseModel.{bm2.id}', f.read()) # Check if object is saved
+            self.assertIn(f'BaseModel.{bm2.id}', f.read())
 
     def test_reload(self):
         """Test reload method"""
@@ -49,6 +48,7 @@ class TestFileStorage(unittest.TestCase):
         self.fs1.reload()
         key = self.obj.__class__.__name__ + "." + self.obj.id
         self.assertIn(key, self.fs1.all())
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -17,7 +17,6 @@ class FileStorage():
     __file_path = "file.json"
     __objects = {}
 
-
     def all(self):
         """Returns the dictionary __objects"""
         return self.__objects
@@ -52,6 +51,7 @@ class FileStorage():
                         self.__objects[key] = obj_class(**value)
         else:
             pass
+
     def delete(self, obj=None):
         """Delete obj from __objects if it's inside"""
         if obj:

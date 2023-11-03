@@ -37,7 +37,8 @@ class TestAmenity(unittest.TestCase):
 
     def test_str(self):
         """Test str"""
-        expected = f"[{type(self.amenity).__name__}] ({self.amenity.id}) {self.amenity.__dict__}"
+        bt = self.amenity
+        expected = f"[{type(bt).__name__}] ({bt.id}) {bt.__dict__}"
         self.assertEqual(str(self.amenity), expected)
 
 

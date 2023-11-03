@@ -5,7 +5,6 @@ from models.base_model import BaseModel
 from models.state import State
 
 
-
 class TestState(unittest.TestCase):
     """Test cases for the State class"""
 
@@ -45,6 +44,7 @@ class TestState(unittest.TestCase):
         """Tear down test fixtures"""
         from models import storage
         storage.delete(self.state)
-        
+
+
 if __name__ == '__main__':
     unittest.main()

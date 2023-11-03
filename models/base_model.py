@@ -8,10 +8,10 @@ import uuid
 
 class BaseModel:
     """
-    BaseModel class that defines all common attributes/methods for other classes.
+    BaseModel class that defines attributes/methods for other classes.
     """
     def __init__(self, *args, **kwargs):
-        """BaseModel class constructor. `*args` can be used for future positional arguments."""
+        """BaseModel class constructor. `*args` positional arguments."""
         if kwargs:
             # Set each key in kwargs, with special handling for dates and ID.
             self.id = kwargs.get('id', str(uuid.uuid4()))
@@ -20,7 +20,8 @@ class BaseModel:
                 value = kwargs.get(key)
                 if value:
                     try:
-                        setattr(self, key, datetime.strptime(value, date_format))
+                        d = date_format
+                        setattr(self, key, datetime.strptime(value, d))
                     except ValueError:
                         setattr(self, key, datetime.now())
                 else:
@@ -38,20 +39,20 @@ class BaseModel:
 
     def __str__(self):
         """
-        Method that returns a string representation of the BaseModel instance
+        Method that returns a string BaseModel instance
         """
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
- 
+
     def save(self):
         """
-        Method that updates the public instance attribute updated_at with the current datetime
+        Method that updates the public instance
         """
         self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
         """
-        Method that returns a dictionary containing all keys/values of __dict__ of the instance
+        Method that returns a dictionary
         """
         new_dict = self.__dict__.copy()
         new_dict['__class__'] = self.__class__.__name__
