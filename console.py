@@ -54,30 +54,23 @@ class HBNBCommand(cmd.Cmd):
             print(model)
         except KeyError:
             print("** no instance found **")
-            return
         except IndexError:
             if li_arg[0] not in self.valid_class:
                 print("** class doesn't exist **")
-                return
             elif len(li_arg) == 1:
                 print("** instance id missing **")
-                return
             else:
                 print("** no instance found **")
-                return
 
     def do_destroy(self, arg):
         """Deletes an instance"""
         li_arg = arg.split()
         if not li_arg:
             print("** class name missing **")
-            return
         elif li_arg[0] not in self.valid_class:
             print("** class doesn't exist **")
-            return
         elif len(li_arg) < 2:
             print("** instance id missing **")
-            return
         else:
             objs = storage.all()
             key = f'{li_arg[0]}.{li_arg[1]}'

@@ -9,39 +9,46 @@ from models.engine.file_storage import FileStorage
 from models import storage
 from models.user import User
 
+
 class TestFileStorage(unittest.TestCase):
-    """ Testing File Storage functionality """
+    """ Testing File Storae functionality """
 
     def setUp(self):
-        """Set up: Reset storage and ensure starting with a clean state."""
-        FileStorage._FileStorage__objects = {}
-        if os.path.exists("file.json"):
-            os.remove("file.json")
+        """Set up"""
+        self.file_path = 'file.json'
+        self.obj1 = BaseModel()
+        self.obj2 = User()
+        self.obj1.save()
+        self.obj2.save()
 
     def tearDown(self):
         """Reset FileStorage and delete the file.json after each test"""
         FileStorage._FileStorage__objects = {}  # Reset internal objects dictionary
         if os.path.exists("file.json"):
-            os.remove("file.json")  # Ensure the file.json is deleted
+            os.remove("file.json")  # Delete the file.json if it exists
 
     def test_all(self):
         """Test all method of FileStorage."""
+        fs = FileStorage()
+        self.assertIsInstance(fs.all(), dict)  # Checking if all() returns a dictionary
         bm = BaseModel()
-        storage.new(bm)
-        self.assertIn(f'BaseModel.{bm.id}', storage.all())  # Check if the new object is in storage
+        fs.new(bm)
+        self.assertIn(f'BaseModel.{bm.id}', fs.all())  # Check if the new object is in storage
 
     def test_new(self):
         """Test new"""
         obj3 = City()
         storage.new(obj3)
         objs = storage.all()
+        self.assertEqual(len(objs), 3)
         self.assertIn(f"{type(obj3).__name__}.{obj3.id}", objs)
 
     def test_save(self):
         """Test save method of FileStorage."""
+        fs = FileStorage()
         bm = BaseModel()
-        storage.new(bm)
-        storage.save()
+        fs.new(bm)
+        fs.save()
         self.assertTrue(os.path.isfile('file.json'))  # Check if file.json is created
 
         with open('file.json', 'r') as f:
@@ -50,23 +57,25 @@ class TestFileStorage(unittest.TestCase):
     
     def test_reload(self):
         """Test reload method of FileStorage."""
+        fs = FileStorage()
         # Ensure initial state is clean
-        self.assertEqual(len(storage.all()), 0, "Initial storage is not empty")
+        self.assertEqual(len(fs.all()), 0, "Initial storage is not empty")
 
         # Create a new BaseModel object, save it, and then clear the storage
         bm = BaseModel()
-        storage.new(bm)
-        storage.save()
+        fs.new(bm)
+        fs.save()
         object_id = f'BaseModel.{bm.id}'
-        self.assertIn(object_id, storage.all())
+        self.assertIn(object_id, fs.all())
 
         # Clearing the objects and ensuring storage is empty before reload
-        FileStorage._FileStorage__objects = {}
-        self.assertEqual(len(storage.all()), 0, "Storage not cleared before reload")
+        fs._FileStorage__objects = {}
+        self.assertEqual(len(fs.all()), 0, "Storage not cleared before reload")
 
         # Reload and check if the object is restored
-        storage.reload()
-        self.assertIn(object_id, storage.all(), "Object not found after reload")
+        fs.reload()
+        self.assertIn(object_id, fs.all(), "Object not found after reload")
+
 
 
 if __name__ == '__main__':

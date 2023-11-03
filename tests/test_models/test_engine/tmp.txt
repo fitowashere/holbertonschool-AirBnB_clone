@@ -1,0 +1,96 @@
+import unittest
+import os
+from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
+
+class TestFileStorage(unittest.TestCase):
+    """ Testing File Storage functionality """
+
+    def setUp(self):
+        """Set up method to start each test with a clean state."""
+        open('file.json', 'w').close()
+        self.fs = FileStorage()
+        # Clear the storage file before starting tests
+        self._clear_storage_file()
+
+    def tearDown(self):
+        """Tear down method to clean up after tests."""
+        self._clear_storage_file()
+
+    def _clear_storage_file(self):
+        """Helper method to clear storage file."""
+        try:
+            os.remove(FileStorage._FileStorage__file_path)  
+            # Replace with actual file path attribute
+        except FileNotFoundError:
+            pass
+
+    def test_reload(self):
+        """Test reload method of FileStorage."""
+        fs = FileStorage()
+        self.assertEqual(len(fs.all()), 0, "Initial storage is not empty")
+
+        # Add diagnostic information
+        if len(fs.all()) != 0:
+            print("Diagnostic Info - Initial objects in FileStorage:", fs.all())
+
+    def test_all(self):
+        """Test all method of FileStorage."""
+        fs = FileStorage()
+        self.assertEqual(len(fs.all()), 0, "Storage should be empty initially")
+
+        # Testing after adding objects
+        obj = BaseModel()
+        fs.new(obj)
+        fs.save()
+
+        self.assertEqual(len(fs.all()), 1,
+                         "Storage should have one object after adding one")
+
+    def test_new(self):
+        """Test new method of FileStorage."""
+        fs = FileStorage()
+        obj = BaseModel()
+        fs.new(obj)
+
+        self.assertIn(obj, fs.all().values(),
+                      "Object not found in FileStorage after adding")
+
+    def test_save(self):
+        """Test save method of FileStorage."""
+        fs = FileStorage()
+        obj = BaseModel()
+        fs.new(obj)
+
+        # Before saving
+        self.assertNotIn(obj.id, self._read_file_data(),
+                         "Object shouldn't be in file before save")
+
+        # After saving
+        fs.save()
+        self.assertIn(obj.id, self._read_file_data(),
+                      "Object ID should be in file after save")
+
+    def _read_file_data(self):
+        """Helper method to read data from the storage file."""
+        with open(FileStorage._FileStorage__file_path, 'r') as f:
+            return f.read()
+
+    def test_delete(self):
+        """Test delete method of FileStorage."""
+        fs = FileStorage()
+        obj = BaseModel()
+        fs.new(obj)
+        fs.save()
+
+        # Assert object is in storage
+        self.assertIn(obj, fs.all().values())
+
+        # Delete and assert object is removed
+        fs.delete(obj)
+        self.assertNotIn(obj, fs.all().values(),
+                         "Object should be removed from storage after delete")
+
+
+if __name__ == '__main__':
+    unittest.main()
