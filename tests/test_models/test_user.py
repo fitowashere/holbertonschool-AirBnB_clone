@@ -70,14 +70,14 @@ class TestUser(unittest.TestCase):
         self.assertEqual(user.first_name, kwargs['first_name'])
         self.assertEqual(user.last_name, kwargs['last_name'])
 
-        def test_init_no_args(self):
-            """Test that the User instance is correctly created without args"""
-            user = User()
-            self.assertEqual(user.email, "")
-            self.assertEqual(user.password, "")
-            self.assertEqual(user.first_name, "")
-            self.assertEqual(user.last_name, "")
-
+    def test_init_no_args(self):
+        """Test that the User instance is correctly created without args"""
+        user = User()
+        self.assertEqual(user.email, "")
+        self.assertEqual(user.password, "")
+        self.assertEqual(user.first_name, "")
+        self.assertEqual(user.last_name, "")
+       
     def tearDown(self):
         """Tear down test fixtures"""
         del self.user
