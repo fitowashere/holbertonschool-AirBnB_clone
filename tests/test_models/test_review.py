@@ -48,6 +48,10 @@ class TestReview(unittest.TestCase):
         expected = f"[{type(self.review).__name__}] ({self.review.id}) {self.review.__dict__}"
         self.assertEqual(str(self.review), expected)
 
+    def tearDown(self):
+        """Tear down test fixtures"""
+        from models import storage
+        storage.delete(self.review)
 
 if __name__ == '__main__':
     unittest.main()

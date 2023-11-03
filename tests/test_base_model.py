@@ -6,6 +6,16 @@ from models.base_model import BaseModel
 class TestBaseModel(unittest.TestCase):
     """ Testing BaseModel functionality """
 
+    def setUp(self):
+        """Set up for testing"""
+        self.bm1 = BaseModel()
+        self.bm2 = BaseModel()
+
+    def tearDown(self):
+        """Tear down/clean up after testing"""
+        del self.bm1
+        del self.bm2
+
     def test_id(self):
         """Test id"""
         bm1 = BaseModel()

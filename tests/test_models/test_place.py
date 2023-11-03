@@ -3,11 +3,20 @@
 import unittest
 from models.base_model import BaseModel
 from models.place import Place
+from models import storage
 
 
 class TestPlace(unittest.TestCase):
     """Test cases for the Place class"""
 
+    def setUp(self):
+        """Set up test fixtures"""
+        self.place = Place()
+
+    def tearDown(self):
+        """Tear down test fixtures"""
+        storage.delete(self.place)
+        
     def test_instantiation(self):
         p = Place()
         self.assertIsInstance(p, Place)
