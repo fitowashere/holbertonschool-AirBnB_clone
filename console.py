@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Module for the console"""
+import argparse
 import cmd
 import json
 from models import storage
