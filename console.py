@@ -51,7 +51,7 @@ class HBNBCommand(cmd.Cmd):
         li_arg = arg.split()
         try:
             model = storage.all()[f"{li_arg[0]}.{li_arg[1]}"]
-            print(model)
+            # print(model)
         except KeyError:
             print("** no instance found **")
         except IndexError:
